@@ -222,3 +222,11 @@ func (l *List[T]) PushFrontList(other *List[T]) {
 		l.insertValue(e.Value, &l.root)
 	}
 }
+
+func (l *List[T]) Range(f func(v T) (stop bool)) {
+	for e := l.Front(); e != nil; e = e.Next() {
+		if f(e.Value) {
+			return
+		}
+	}
+}
