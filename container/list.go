@@ -1,4 +1,4 @@
-package list
+package container
 
 // Element is an element of a linked list.
 type Element[T any] struct {

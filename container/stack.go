@@ -1,6 +1,4 @@
-package stack
-
-import "GoDataToolkit/container/list"
+package container
 
 type sliceStack[T any] []T
 
@@ -25,7 +23,7 @@ func (s *sliceStack[T]) push(v T) {
 }
 
 type Stack[T any] struct {
-	list       list.List[sliceStack[T]]
+	list       List[sliceStack[T]]
 	bucketSize int
 	len        int
 }
