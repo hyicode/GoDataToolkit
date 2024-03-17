@@ -6,13 +6,21 @@ import (
 )
 
 func TestStack(t *testing.T) {
-	s := NewStack[int](5)
-	for i := 0; i < 10; i++ {
+	s := NewStack[int]()
+	count := 100
+	for i := 0; i < count; i++ {
 		s.Push(i)
-		assert.EqualFatalf(t, i+1, s.Len(), "")
+		assert.EqualFatalf(t, i+1, s.Len(), "push")
 	}
-	for i := 9; i >= 0; i-- {
+	expectV := 0
+	s.Range(func(v int) (stop bool) {
+		assert.EqualFatalf(t, expectV, v, "range")
+		expectV++
+		return false
+	})
+	assert.EqualFatalf(t, expectV, count, "expectV")
+	for i := count; i > 0; i-- {
 		v := s.Pop()
-		assert.EqualFatalf(t, i, v, "")
+		assert.EqualFatalf(t, i-1, v, "pop")
 	}
 }
