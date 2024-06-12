@@ -50,16 +50,17 @@ func (s *Stack[T]) Pop() T {
 	return v
 }
 
-func (s *Stack[T]) Push(v T) {
+func (s *Stack[T]) Push(v T) *Stack[T] {
 	if s.len%s.bucketSize == 0 {
 		item := s.list.PushBack(newSliceStack[T](s.bucketSize))
 		item.Value.push(v)
 		s.len++
-		return
+		return s
 	}
 	item := s.list.Back()
 	item.Value.push(v)
 	s.len++
+	return s
 }
 
 func (s *Stack[T]) Range(f func(v T) (stop bool)) {
@@ -68,6 +69,35 @@ func (s *Stack[T]) Range(f func(v T) (stop bool)) {
 			if f(v) {
 				return
 			}
+		}
+	}
+}
+
+func (s *Stack[T]) RemoveFunc(num int, f func(v T) (stop bool)) {
+	counter := 0
+	for e := s.list.Front(); e != nil; e = e.Next() {
+		var l sliceStack[T]
+		for i, v := range e.Value {
+			if f(v) {
+				counter++
+				s.len--
+				if len(l) == 0 {
+					l = append(l, e.Value[:i]...)
+				}
+				if num > 0 && counter >= num {
+					l = append(l, e.Value[i+1:]...)
+					e.Value = l
+					if len(e.Value) == 0 {
+						s.list.Remove(e)
+					}
+					return
+				}
+			} else if len(l) > 0 {
+				l = append(l, v)
+			}
+		}
+		if len(l) > 0 {
+			e.Value = l
 		}
 	}
 }

@@ -1,7 +1,7 @@
 package container
 
 import (
-	"GoDataToolkit/assert"
+	"github.com/hyicode/GoDataToolkit/assert"
 	"testing"
 )
 
